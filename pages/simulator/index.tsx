@@ -30,7 +30,7 @@ export default function Simulator() {
   useEffect(() => {
     let newResults = [];
 
-    const investissementMensuel = data?.monthlyInvestment;
+    let investissementMensuel: number = data?.monthlyInvestment;
     const revenuMensuelParBrick = data?.yearlyPricePerBrick / 100;
     const rendementValeurBrickAnnuel = data?.increasePercentByYear; //% pourcent
     const numberOfYears = data?.totalYears;
@@ -39,7 +39,7 @@ export default function Simulator() {
 
     let revenu = 0;
     let totalRevenu = 0;
-    let investissementTotalDeSaPoche = 0;
+    let investissementTotalDeSaPoche: number = 0;
     let revenuTotalReinvesti = 0;
 
     let actualBricks = Math.floor(investissementMensuel / 10);
@@ -70,7 +70,14 @@ export default function Simulator() {
         revenuTotalReinvesti += Math.floor(revenu / 10) * 10;
         revenu -= Math.floor(revenu / 10) * 10;
 
-        investissementTotalDeSaPoche += parseInt(investissementMensuel);
+        if (typeof investissementTotalDeSaPoche !== "number") {
+          investissementTotalDeSaPoche = parseInt(investissementTotalDeSaPoche);
+        }
+        if (typeof investissementMensuel !== "number") {
+          investissementMensuel = parseInt(investissementMensuel);
+        }
+        investissementTotalDeSaPoche =
+          investissementTotalDeSaPoche + investissementMensuel;
       }
 
       //a la fin de l'année, les bricks gagne en valeur pour la revente
@@ -80,7 +87,7 @@ export default function Simulator() {
 
       newResults[year] = {
         investissementSortiDeSaPocheDepuisLeDebut:
-          investissementTotalDeSaPoche + "€",
+          investissementTotalDeSaPoche.toString() + "€",
         totalBricksActuellement: actualBricks + " Bricks",
         totalDesRevenusDepuisLeDebut: Math.floor(totalRevenu) + "€",
         totalDesRevenuReinvestisDepuisLeDebut: revenuTotalReinvesti + "€",
@@ -98,7 +105,6 @@ export default function Simulator() {
               ).toString() + "% de revenus en plus",
       };
     }
-    console.log(newResults);
 
     setResult(newResults);
   }, [data]);
