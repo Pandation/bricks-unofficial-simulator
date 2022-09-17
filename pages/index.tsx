@@ -122,7 +122,7 @@ export default function Simulator() {
           revenus potentiels sur les années
         </p>
 
-        <Card sx={{ maxWidth: 900, width: "100%" }}>
+        <Card sx={{ maxWidth: 900, width: "100%" , marginBottom: 3}}>
           <CardHeader title="Simulateur" />
           <CardContent>
             <Stack alignItems="stretch" direction="column" spacing={2}>
