@@ -116,24 +116,6 @@ export default function Simulator() {
     <div className={styles.container}>
       <main className={styles.main}>
         <h1 className={styles.title}>Simulateur Non-Officiel pour Bricks.co</h1>
-        <Link href="/">
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              fontWeight: "bold",
-              fontSize: "2rem",
-              "> span": {
-                marginLeft: 2,
-              },
-            }}
-            component="a"
-          >
-            <ArrowBack fontSize="large" />
-            <span> Retour </span>
-          </Box>
-        </Link>
 
         <p className={styles.description}>
           Entrez simplement les données de la propriété pour calculer les
