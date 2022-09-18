@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import styles from "../styles/Home.module.css";
 import { ArrowBack } from "@mui/icons-material";
 import { Box } from "@mui/material";
 import Prism from "prismjs";
@@ -10,9 +9,9 @@ export default function CodeSourcePage() {
     Prism.highlightAll();
   }, []);
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Simulateur Non-Officiel pour Bricks.co</h1>
+    <div className={"container"}>
+      <main className={"main"}>
+        <h1 className={"title"}>Simulateur Non-Officiel pour Bricks.co</h1>
         <Link href="/">
           <Box
             sx={{
@@ -32,7 +31,7 @@ export default function CodeSourcePage() {
           </Box>
         </Link>
 
-        <p className={styles.description}>
+        <p className={"description"}>
           Source du code employé pour le simulateur
         </p>
 
@@ -40,7 +39,7 @@ export default function CodeSourcePage() {
           <code className="language-javascript">
             {`let rapports = [];
 
-let investissementMensuel = 200;
+const investissementMensuel = 200;
 const revenuMensuelParBrick = 0.6; 
 
 //CALCUL PLUS VALUE ANNUELLE

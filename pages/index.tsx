@@ -60,11 +60,11 @@ export default function Simulator() {
     setData((data) => ({ ...data, [evt.target.name]: evt.target.checked }));
   };
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>Simulateur Non-Officiel pour Bricks.co</h1>
+    <div className={"container"}>
+      <main className={"main"}>
+        <h1 className={"title"}>Simulateur Non-Officiel pour Bricks.co</h1>
 
-        <p className={styles.description}>
+        <p className={"description"}>
           Entrez simplement les données de la propriété pour calculer les
           revenus potentiels sur les années
         </p>
