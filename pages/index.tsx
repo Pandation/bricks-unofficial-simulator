@@ -36,6 +36,7 @@ export default function Simulator() {
     totalYears: 10,
     monthlyInvestment: 0,
     yearlyPricePerBrick: 0,
+    bricksTotal : 0,
     increasePercentByYear: 0,
     withIncreasment: true,
     yearsBeforeStopInjecting: 0,
@@ -239,7 +240,7 @@ function computeSimulationResult(data) {
   let investissementTotalDeSaPoche: number = 0;
   let revenuTotalReinvesti = 0;
 
-  let actualBricks = Math.floor(investissementMensuel / 10);
+  let actualBricks = data.bricksTotal;
 
   let revenuAnneeActuelle = 0;
   let revenuAnneePassee = 0;
