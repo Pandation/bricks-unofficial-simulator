@@ -1,19 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-
 import {
-  Box,
   Accordion,
   AccordionDetails,
   AccordionSummary,
   CardHeader,
   Typography,
   Card,
+  FormGroup,
+  FormControlLabel,
   Stack,
   CardContent,
   TextField,
+  Switch,
 } from "@mui/material";
-import { ExpandMore, ArrowBack } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 
 import styles from "styles/Home.module.css";
 import { useEffect, useState } from "react";
@@ -24,17 +23,20 @@ export default function Simulator() {
     monthlyInvestment: 0,
     yearlyPricePerBrick: 0,
     increasePercentByYear: 0,
+    withIncreasment: true,
+    yearsBeforeStopInjecting: 0,
+    withStopInject: false,
   });
   const [result, setResult] = useState([]);
 
   useEffect(() => {
     let newResults = [];
 
-    let investissementMensuel: number = data?.monthlyInvestment;
-    const revenuMensuelParBrick = data?.yearlyPricePerBrick / 100;
-    const rendementValeurBrickAnnuel = data?.increasePercentByYear; //% pourcent
-    const numberOfYears = data?.totalYears;
+    let investissementMensuel: number = data.monthlyInvestment;
+    const revenuMensuelParBrick = data.yearlyPricePerBrick / 100;
 
+    //CALCUL PLUS VALUE ANNUELLE
+    const rendementValeurBrickAnnuel = data.increasePercentByYear; //% pourcent
     let valeurReventeParBrick = 10;
 
     let revenu = 0;
@@ -46,8 +48,9 @@ export default function Simulator() {
 
     let revenuAnneeActuelle = 0;
     let revenuAnneePassee = 0;
-
     let dernierRevenuMensuelPercu = 0;
+
+    const numberOfYears = data?.totalYears;
 
     for (let year = 0; year < numberOfYears; year++) {
       revenuAnneePassee = revenuAnneeActuelle;
@@ -63,34 +66,31 @@ export default function Simulator() {
         revenuAnneeActuelle += revenuDuMois;
 
         //on réinvesti mensuellement + les loyers percus
-        actualBricks +=
-          Math.floor(investissementMensuel / 10) + Math.floor(revenu / 10);
+        actualBricks += Math.floor(revenu / 10);
+        if (!data.withStopInject || data.yearsBeforeStopInjecting > year) {
+          actualBricks += Math.floor(investissementMensuel / 10);
+          investissementTotalDeSaPoche =
+            investissementTotalDeSaPoche + investissementMensuel;
+        }
 
         //si les loyers percus sont suffisant pour au moins une brick, on soustraits leur prix des revenus
         revenuTotalReinvesti += Math.floor(revenu / 10) * 10;
         revenu -= Math.floor(revenu / 10) * 10;
-
-        if (typeof investissementTotalDeSaPoche !== "number") {
-          investissementTotalDeSaPoche = parseInt(investissementTotalDeSaPoche);
-        }
-        if (typeof investissementMensuel !== "number") {
-          investissementMensuel = parseInt(investissementMensuel);
-        }
-        investissementTotalDeSaPoche =
-          investissementTotalDeSaPoche + investissementMensuel;
       }
 
       //a la fin de l'année, les bricks gagne en valeur pour la revente
-      valeurReventeParBrick =
-        valeurReventeParBrick +
-        (rendementValeurBrickAnnuel * valeurReventeParBrick) / 100;
+      if (data.withIncreasment) {
+        valeurReventeParBrick =
+          valeurReventeParBrick +
+          (rendementValeurBrickAnnuel * valeurReventeParBrick) / 100;
+      }
 
       newResults[year] = {
         investissementSortiDeSaPocheDepuisLeDebut:
           investissementTotalDeSaPoche.toString() + "€",
         totalBricksActuellement: actualBricks + " Bricks",
         totalDesRevenusDepuisLeDebut: Math.floor(totalRevenu) + "€",
-        totalDesRevenuReinvestisDepuisLeDebut: revenuTotalReinvesti + "€",
+        totalDesRevenusReinvestisDepuisLeDebut: revenuTotalReinvesti + "€",
         prixSiTuRevendsToutesTesBricks:
           Math.floor(actualBricks * valeurReventeParBrick) + "€",
         dernierRevenuMensuelPercu: Math.floor(dernierRevenuMensuelPercu) + "€",
@@ -109,8 +109,15 @@ export default function Simulator() {
     setResult(newResults);
   }, [data]);
 
-  const handleChange = (e) => {
-    setData((data) => ({ ...data, [e.target.name]: e.target.value }));
+  const handleChange = (evt) => {
+    setData((data) => ({
+      ...data,
+      [evt.target.name]: parseInt(evt.target.value),
+    }));
+  };
+
+  const handleSwitchChange = (evt) => {
+    setData((data) => ({ ...data, [evt.target.name]: evt.target.checked }));
   };
   return (
     <div className={styles.container}>
@@ -122,7 +129,7 @@ export default function Simulator() {
           revenus potentiels sur les années
         </p>
 
-        <Card sx={{ maxWidth: 900, width: "100%" , marginBottom: 3}}>
+        <Card sx={{ maxWidth: 900, width: "100%", marginBottom: 3 }}>
           <CardHeader title="Simulateur" />
           <CardContent>
             <Stack alignItems="stretch" direction="column" spacing={2}>
@@ -150,17 +157,37 @@ export default function Simulator() {
                   step: "0.01",
                 }}
               />
-              <TextField
-                label="Plus-value attendue par Année (%)"
-                variant="outlined"
-                name="increasePercentByYear"
-                onChange={handleChange}
-                inputProps={{
-                  inputMode: "numeric",
-                  pattern: "[0-9]*",
-                  step: "0.01",
-                }}
-              />
+              <Stack
+                spacing={2}
+                direction="row"
+                justifyContent={"space-evenly"}
+                alignContent="center"
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      name="withIncreasment"
+                      onChange={handleSwitchChange}
+                      checked={data.withIncreasment}
+                      inputProps={{ "aria-label": "Switch demo" }}
+                    />
+                  }
+                  label="Prise en compte de la plus value annuelle"
+                />
+
+                <TextField
+                  disabled={!data.withIncreasment}
+                  label="Plus-value attendue par Année (%)"
+                  variant="outlined"
+                  name="increasePercentByYear"
+                  onChange={handleChange}
+                  inputProps={{
+                    inputMode: "numeric",
+                    pattern: "[0-9]*",
+                    step: "0.01",
+                  }}
+                />
+              </Stack>
               <TextField
                 label="Nombre d'années pour le rapport"
                 variant="outlined"
@@ -184,6 +211,35 @@ export default function Simulator() {
                   step: "1",
                 }}
               />
+              <Stack
+                spacing={2}
+                direction="row"
+                justifyContent={"space-evenly"}
+                alignContent="center"
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      name="withStopInject"
+                      onChange={handleSwitchChange}
+                      checked={data.withStopInject}
+                      inputProps={{ "aria-label": "Switch demo" }}
+                    />
+                  }
+                  label="Arrêter d'investir après X années (sauf les revenus)"
+                />
+                <TextField
+                  label="Nombre d'années à investir mensuellement"
+                  variant="outlined"
+                  name="yearsBeforeStopInjecting"
+                  onChange={handleChange}
+                  inputProps={{
+                    inputMode: "numeric",
+                    pattern: "[0-9]*",
+                    step: "1",
+                  }}
+                />
+              </Stack>
             </Stack>
           </CardContent>
         </Card>
