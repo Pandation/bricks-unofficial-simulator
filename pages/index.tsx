@@ -17,6 +17,19 @@ import { ExpandMore } from "@mui/icons-material";
 import styles from "styles/Home.module.css";
 import { useEffect, useState } from "react";
 
+const keyToSentence = {
+  investissementSortiDeSaPocheDepuisLeDebut:
+  "Investissement personnel depuis le début: ",
+totalBricksActuellement: "Nombre de bricks possédé: ",
+totalDesRevenusDepuisLeDebut: "Total des revenus (loyers) depuis le début: ",
+totalDesRevenusReinvestisDepuisLeDebut: "Revenus réinvestis depuis le début: ",
+prixSiTuRevendsToutesTesBricks:
+"Prix de revente de la totalité des bricks: ",
+dernierRevenuMensuelPercu: "Dernier loyer mensuel perçu: ",
+revenuEnPourcentageParRapportAlAnDernier: "Revenu en pourcentage par rapport à l'an dernier: "
+}
+
+
 export default function Simulator() {
   const [data, setData] = useState({
     totalYears: 10,
@@ -190,7 +203,7 @@ export default function Simulator() {
                   <AccordionDetails>
                     {Object.keys(yearResult).map((key, keyIndex) => (
                       <Typography key={keyIndex}>
-                        {key} : {yearResult[key]}
+                        {keyToSentence[key]} : {yearResult[key]}
                       </Typography>
                     ))}
                   </AccordionDetails>
