@@ -6,6 +6,10 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+html {
+  background-image: linear-gradient(to bottom right, rgb(255, 128, 55), rgb(253, 90, 90));
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -26,7 +30,6 @@ a:hover {
 
 .container {
   padding: 0 2rem;
-  background-image: linear-gradient(to bottom right, rgb(255, 128, 55),rgb(253, 90, 90));
 }
 
 .main {
@@ -58,4 +61,3 @@ a:hover {
   line-height: 1.5;
   font-size: 1.5rem;
 }
-
