@@ -6,7 +6,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-html {
+body {
   background-image: linear-gradient(to bottom right, rgb(255, 128, 55), rgb(253, 90, 90));
 }
 
