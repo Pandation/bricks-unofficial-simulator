@@ -16,19 +16,20 @@ import { ExpandMore } from "@mui/icons-material";
 
 import styles from "styles/Home.module.css";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const keyToSentence = {
   investissementSortiDeSaPocheDepuisLeDebut:
-  "Investissement personnel depuis le début: ",
-totalBricksActuellement: "Nombre de bricks possédé: ",
-totalDesRevenusDepuisLeDebut: "Total des revenus (loyers) depuis le début: ",
-totalDesRevenusReinvestisDepuisLeDebut: "Revenus réinvestis depuis le début: ",
-prixSiTuRevendsToutesTesBricks:
-"Prix de revente de la totalité des bricks: ",
-dernierRevenuMensuelPercu: "Dernier loyer mensuel perçu: ",
-revenuEnPourcentageParRapportAlAnDernier: "Revenu en pourcentage par rapport à l'an dernier: "
-}
-
+    "Investissement personnel depuis le début: ",
+  totalBricksActuellement: "Nombre de bricks possédé: ",
+  totalDesRevenusDepuisLeDebut: "Total des revenus (loyers) depuis le début: ",
+  totalDesRevenusReinvestisDepuisLeDebut:
+    "Revenus réinvestis depuis le début: ",
+  prixSiTuRevendsToutesTesBricks: "Prix de revente de la totalité des bricks: ",
+  dernierRevenuMensuelPercu: "Dernier loyer mensuel perçu: ",
+  revenuEnPourcentageParRapportAlAnDernier:
+    "Revenu en pourcentage par rapport à l'an dernier: ",
+};
 
 export default function Simulator() {
   const [data, setData] = useState({
@@ -67,6 +68,12 @@ export default function Simulator() {
           Entrez simplement les données de la propriété pour calculer les
           revenus potentiels sur les années
         </p>
+
+        <div>
+          <Link href="/code">
+            <a>Voir le code source</a>
+          </Link>
+        </div>
 
         <Card sx={{ maxWidth: 900, width: "100%", marginBottom: 3 }}>
           <CardHeader title="Simulateur" />
