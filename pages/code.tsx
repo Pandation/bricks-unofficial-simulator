@@ -49,7 +49,7 @@ let valeurReventeParBrick = 10; //€
 
 let revenu = 0;
 let totalRevenu = 0;
-let investissementTotalDeSaPoche: number = 0;
+let investissementTotalDeSaPoche = 0;
 let revenuTotalReinvesti = 0;
 
 let nombreActuelDeBricks = Math.floor(investissementMensuel / 10);
